@@ -23,6 +23,7 @@ if(NOT EXISTS "${GOOGLETEST_DIR}/CMakeLists.txt")
 endif()
 
 add_subdirectory("${GOOGLETEST_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/googletest")
+find_package(glog REQUIRED)
 
 enable_testing()
 
@@ -33,7 +34,8 @@ add_executable(test_buffer
 target_link_libraries(test_buffer
     PRIVATE
         llm_infer_framework
-        gtest_main
+        gtest
+        glog::glog
 )
 
 include(GoogleTest)
