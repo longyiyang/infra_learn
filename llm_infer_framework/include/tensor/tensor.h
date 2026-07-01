@@ -13,7 +13,13 @@ public:
     bool Tensor::allocate(std::shared_ptr<base::DeviceAllocator> allocator,bool need_realloc = false);
     
     size_t size() const {return this->size_;}
-    size_t byte_size() const {return this->size() * DataTy}
+    size_t byte_size() const {return this->size() * DataTypeSize(data_type_);}
+
+    template<typename T> // 函数模板声明，定义也写在头文件里
+    T * ptr();
+
+    template<typename T>
+    const T* ptr() const;
     
 private:
     size_t size_ = 0;
@@ -21,4 +27,12 @@ private:
     std::shared_ptr<base::Buffer> buffer_;
     base::DataType data_type_ = base::DataType::kDataTypeUnknown;
 };
+
+template<typename T>
+T* Tensor::ptr(){
+    if(!buffer_) return nullptr;
+    return reinterpret_cast<T*>(buffer_->ptr());
+}
+
+
 }

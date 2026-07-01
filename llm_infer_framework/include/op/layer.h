@@ -46,7 +46,9 @@ public:
                                     const void* weight_ptr,
                                     base::DeviceType device_type = base::DeviceType::kDeviceUnkonwn);
     
-
+    // 计算相关
+    virtual base::Status forward() = 0;   
+    virtual base::Status check() const = 0;     
     
                                 
 protected:
@@ -57,7 +59,7 @@ protected:
 };
 
 // 不带参数（权重）的算子类
-class Layer :  public Baselayer{
+class Layer : public Baselayer{
 public:
     explicit Layer(base::DeviceType device_type, LayerType layer_type,
         std::string layer_name =  "");
@@ -74,6 +76,10 @@ public:
     void reset_output_size(size_t size);
 
     virtual void to_cuda();
+
+    // 计算的部分
+    base::Status forward() override;
+    base::Status check() const override;
 
 private:
     std::vector<tensor::Tensor> inputs_;
