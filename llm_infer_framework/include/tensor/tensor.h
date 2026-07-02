@@ -20,6 +20,12 @@ public:
 
     template<typename T>
     const T* ptr() const;
+
+    template<typename T>
+    T & index(int64_t offset);
+
+    template<typename T>
+    const T & index(int64_t offset) const;
     
 private:
     size_t size_ = 0;
@@ -33,6 +39,25 @@ T* Tensor::ptr(){
     if(!buffer_) return nullptr;
     return reinterpret_cast<T*>(buffer_->ptr());
 }
+
+template<typename T>
+T & Tensor::index(int64_t offset){
+    CHECK_GE(offset,0);
+    CHECK_LT(offset,this->size());
+    T& val = *(reinterpret_cast<T*>(buffer->ptr()) + offset);
+    return val;
+} 
+
+template<typename T>
+const T & Tensor::index(int64_t offset) const{
+    CHECK_GE(offset,0);
+    CHECK_LT(offset,this->size());
+    const T& val = *(reinterpret_cast<T*>(buffer->ptr()) + offset);
+    return val;
+} 
+
+
+
 
 
 }
