@@ -86,6 +86,23 @@ private:
     std::vector<tensor::Tensor> outputs_;    
 };
 
+// 带权重的算子层
+class LayerFp32Param : public Layer{
+public:
+    explicit LayerFp32Param(base::DeviceType device_type,LayerType layer_type,
+                            std::string layer_name = "");
+    size_t weight_size() const;
+    void reset_weight_size(size_t size);
+    tensor::Tensor& get_weight(int32_t idx);
+    const tensor::Tensor& get_weight(int32_t idx) const;
+    void set_weight(int32_t idx,const tensor::Tensor& weight);
+    void set_weight(int32_t idx,const std::vector<int32_t> & dims,const float *weight_ptr,
+                    base::DeviceType device_type = base::DeviceType::kDeviceUnkonwn);    
+
+private:
+    std::vector<tensor::Tensor> weights_;
+};
+
 
 }
 
