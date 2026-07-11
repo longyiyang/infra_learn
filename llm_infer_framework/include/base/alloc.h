@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.h"
-
+#include <map>
 #include <cstddef>
 #include <memory>
 
@@ -36,14 +36,30 @@ public:
 
 };
 
+struct CudaMemoryBuffer{
+    void * data;
+    size_t byte_size;
+    bool busy;
+
+    CudaMemoryBuffer() = default;
+    CudaMemoryBuffer(void *data,size_t byte_size,bool busy)
+                    : data(data),byte_size(byte_size),busy(busy)
+                    {}
+};
+
 // gpu 资源分配器
 class CUDADeviceAllocator : public DeviceAllocator{
 public:
     explicit CUDADeviceAllocator();
 
-    void * allocate(size_t size) const;
-    void release(void *ptr) const;
-  
+    void * allocate(size_t size) const override;
+    void release(void *ptr) const override;
+private:
+    mutable std::map<int,size_t> no_busy_cnt_;
+    // 对应大块显存的管理,注意值是一个vector
+    mutable std::map<int,std::vector<CudaMemoryBuffer>> big_buffers_map_;
+    // 对应小块显存的管理
+    mutable std::map<int,std::vector<CudaMemoryBuffer>> cuda_bufers_map_;
 };
 
 class CPUDeviceAllocatorFactoty{

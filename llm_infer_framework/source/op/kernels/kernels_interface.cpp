@@ -26,7 +26,7 @@ RMSNormKernel get_rmsnorm_kernel(base::DeviceType device_type)
         return rmsnorm_kernel_cpu;
     }
     else if(device_type ==  base::DeviceType::kDeviceGPU){
-        return row_rmsnorm_f32;
+        return rmsnorm_kernel_cu;
     }
     else{
         return nullptr;
