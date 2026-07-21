@@ -54,4 +54,11 @@ public:
 
 };
 
+namespace error{
+
+Status Success(const std::string & err_msg = "");
+Status PathNotValid(const std::string& err_msg = "");
+Status ModelParseError(const std::string& err_msg = "");
+}
+
 }

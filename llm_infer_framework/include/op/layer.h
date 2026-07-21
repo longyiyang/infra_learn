@@ -87,9 +87,9 @@ private:
 };
 
 // 带权重的算子层
-class LayerFp32Param : public Layer{
+class LayerParam : public Layer{
 public:
-    explicit LayerFp32Param(base::DeviceType device_type,LayerType layer_type,
+    explicit LayerParam(base::DeviceType device_type,LayerType layer_type,
                             std::string layer_name = "");
     size_t weight_size() const;
     void reset_weight_size(size_t size);
